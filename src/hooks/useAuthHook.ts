@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { login } from "../services/authService";
+import { login, logout } from "../services/authService";
 
 export const useLogin = () => {
     return useMutation({
@@ -8,4 +8,13 @@ export const useLogin = () => {
             console.error("Failed to login:", error);
         },
     })
+}
+
+export const useLogout = () => {
+    return useMutation({
+        mutationFn: () => logout(),
+        onError: (error) => {
+            console.error("Failed to logout:", error);
+        },
+    }) 
 }

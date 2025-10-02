@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
-const Home = () => {
+const Profile = () => {
   return (
     <Box
       sx={{
@@ -13,13 +13,10 @@ const Home = () => {
       }}
     >
       <Typography variant="h2" fontWeight="bold" gutterBottom>
-        Welcome
-      </Typography>
-      <Typography variant="h6" color="text.secondary">
-        to the User Portal
+        Coming Soon
       </Typography>
     </Box>
   );
-};
+}
 
-export default Home;
+export default Profile

@@ -1,3 +1,4 @@
+import { getIdToken } from "../services/tokenService"
 import axios from '../lib/axios';
 
 export const login = async (username: string, password: string) => {
@@ -11,7 +12,14 @@ export const login = async (username: string, password: string) => {
     }
 };
 
-export const refreshToken = async (refreshToken: string) => {
-  const res = await axios.post('token', { refresh_token: refreshToken });
-  return res.data;
-};
+export const logout = async () => {
+  const idToken = getIdToken();
+
+  const res = await axios.delete('/signout', {
+    headers: {
+      "x-id-token": idToken
+    }
+  });
+
+  return res.data
+}

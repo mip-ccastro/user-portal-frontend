@@ -25,9 +25,13 @@ const AppRouter = () => {
               <Route key={index} path={route.path} element={<route.page />} />
             ))}
           </Route>
-            {public_routes.map((route, index) => (
-              <Route key={index} path={route.path} element={<route.page />} />
-            ))}
+          {public_routes.map((route, index) => (
+            <Route
+              key={index}
+              path={route.path}
+              element={<route.page />}
+            />
+          ))}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Suspense>

@@ -1,5 +1,5 @@
-import { Button, IconButton, Typography } from "@mui/material";
-import { Trash, SquarePen } from "lucide-react";
+import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Trash, SquarePen, UsersIcon } from "lucide-react";
 import { useFetchUsers } from "../hooks/useUser";
 import { useState } from "react";
 import capitalize from "lodash/capitalize";
@@ -27,12 +27,12 @@ const Users = () => {
   const closeUpdateModal = () => {
     setUpdateModalOpen(false);
     setSelectedUser(null);
-  }
+  };
 
   const closeDeleteModal = () => {
     setDeleteModalOpen(false);
     setSelectedToDelete(null);
-  }
+  };
 
   const CustomStatus = (params: GridRenderCellParams) => {
     const status = params.value;
@@ -83,12 +83,12 @@ const Users = () => {
 
     const handleEdit = () => {
       setSelectedUser(rowData.id);
-      setUpdateModalOpen(true)
+      setUpdateModalOpen(true);
     };
 
     const handleDelete = () => {
       setSelectedToDelete(rowData.id);
-      setDeleteModalOpen(true)
+      setDeleteModalOpen(true);
     };
 
     return (
@@ -96,7 +96,12 @@ const Users = () => {
         <IconButton onClick={handleEdit} color="primary" size="small">
           <SquarePen fontSize="inherit" />
         </IconButton>
-        <IconButton onClick={handleDelete} color="error" size="small" disabled={rowData.id === user?.user_id} >
+        <IconButton
+          onClick={handleDelete}
+          color="error"
+          size="small"
+          disabled={rowData.id === user?.user_id}
+        >
           <Trash fontSize="inherit" />
         </IconButton>
       </>
@@ -107,13 +112,10 @@ const Users = () => {
     { field: "first_name", headerName: "First name", flex: 1 },
     { field: "last_name", headerName: "Last name", flex: 1 },
     {
-      field: "fullName",
-      headerName: "Full name",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
+      field: "username",
+      headerName: "Username",
       flex: 1.5,
-      valueGetter: (value, row) =>
-        `${row.first_name || ""} ${row.last_name || ""}`,
+      valueGetter: (value, row) => `${row?.user_credentials?.username || ""}`,
     },
     { field: "email", headerName: "Email", flex: 2 },
     {
@@ -159,9 +161,12 @@ const Users = () => {
 
   return (
     <div>
-      <Typography variant="h5" gutterBottom component="div" mb={2}>
-        Users
-      </Typography>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+        <UsersIcon />
+        <Typography variant="h5" sx={{ fontWeight: "bold" }} noWrap component="div">
+          Users
+        </Typography>
+      </Box>
       <Button
         variant="contained"
         color="primary"
@@ -196,7 +201,6 @@ const Users = () => {
         />
       </ReusableModal>
       <ReusableModal
-
         title="Delete User"
         isOpen={deleteModalOpen}
         handleClose={closeDeleteModal}

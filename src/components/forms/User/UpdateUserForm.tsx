@@ -5,6 +5,7 @@ import { useFetchUser, useUpdateUser } from "../../../hooks/useUser"
 import { useForm } from "react-hook-form"
 import { useSnackbar } from "../../../context/SnackBarContext"
 import { zodResolver } from "@hookform/resolvers/zod"
+import Loading from "../../common/Loading"
 import UpdateUserInformation from "./components/UpdateUserInformation"
 
 export type UpdateUserFormProps = {
@@ -65,7 +66,7 @@ const UpdateUserForm = (props: UpdateUserFormProps) => {
     }
   }
 
-  if(isLoading) return <p>Loading...</p>
+  if(isLoading) return <Loading message="Loading..." />
   if(isError) return <p>Error</p>
 
   return (

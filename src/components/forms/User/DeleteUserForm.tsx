@@ -1,7 +1,8 @@
 import React from "react";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { useDeleteUser, useFetchUser } from "../../../hooks/useUser";
 import { useSnackbar } from "../../../context/SnackBarContext";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import Loading from "../../common/Loading";
 
 export type UpdateUserFormProps = {
   cancel: () => void;
@@ -33,7 +34,7 @@ const DeleteUserForm = (props: UpdateUserFormProps) => {
     }
   };
 
-  if(isLoading) return <p>Loading...</p>
+  if(isLoading) return <Loading message="Loading..." />
   if(isError) return <p>Error</p>
 
   return (

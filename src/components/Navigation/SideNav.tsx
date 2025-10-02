@@ -1,9 +1,12 @@
-import React, { useState } from "react";
 import { DRAWER_WIDTH } from "../../utils/constants/sidenav";
 import { MenuIcon, UserIcon, LogOut } from "lucide-react";
 import { navigateTo } from "../../services/navigateService";
 import { protected_routes } from "../../routes/routes";
+import { useAuthContext } from "../../hooks/useAuth";
+import { useLogout } from "../../hooks/useAuthHook";
+import { useSnackbar } from "../../context/SnackBarContext";
 import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -13,13 +16,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Avatar from "@mui/material/Avatar";
+import React, { useState } from "react";
+import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
-import { useAuthContext } from "../../hooks/useAuth";
+import Typography from "@mui/material/Typography";
 
 interface Props {
   window?: () => Window;
@@ -27,11 +29,12 @@ interface Props {
 
 export default function ResponsiveDrawer(props: Props) {
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const { user, logout } = useAuthContext()
-
+  const [isClosing, setIsClosing] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const { mutateAsync, isPending: isLoggingOut } = useLogout();
+  const { showSnackbar } = useSnackbar();
+  const { user, logout } = useAuthContext();
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -60,13 +63,20 @@ export default function ResponsiveDrawer(props: Props) {
 
   const handleProfile = () => {
     handleCloseUserMenu();
-    navigateTo('/profile');
+    navigateTo("/profile");
   };
 
-  const handleLogout = () => {
-    handleCloseUserMenu();
-    logout()
-    navigateTo('/login');
+  const handleLogout = async () => {
+    try {
+      await mutateAsync();
+      handleCloseUserMenu();
+      logout();
+      navigateTo("/login");
+      showSnackbar("Logged out successfully", "success");
+    } catch (error) {
+      console.error("Failed to logout:", error);
+      showSnackbar("Failed to logout", "error");
+    }
   };
 
   const drawer = (
@@ -81,7 +91,7 @@ export default function ResponsiveDrawer(props: Props) {
       </Toolbar>
       <Divider />
       <List>
-        {protected_routes.map((route, index) => (
+        {protected_routes.filter((route) => route.inMenu).map((route, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton onClick={handleNavigate(route.path)}>
               <ListItemIcon>
@@ -117,23 +127,19 @@ export default function ResponsiveDrawer(props: Props) {
           >
             <MenuIcon />
           </IconButton>
-
-          {/* Spacer to push user menu to the right */}
           <Box sx={{ flexGrow: 1 }} />
-
-          {/* User Menu */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <Box sx={{ display: { xs: "none", md: "block" } }}>
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+              <Typography variant="body2" sx={{ fontWeight: 500 }} align="right">
                 {user?.first_name ?? ""} {user?.last_name ?? ""}
               </Typography>
-              <Typography variant="caption" sx={{ opacity: 0.8 }}>
+              <Typography variant="caption" sx={{ opacity: 0.8 }} align="right">
                 {user?.email}
               </Typography>
             </Box>
             <Tooltip title="Account settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar 
+                <Avatar
                   alt={`${user?.first_name} ${user?.last_name}`}
                   sx={{ width: 40, height: 40 }}
                 >
@@ -160,7 +166,9 @@ export default function ResponsiveDrawer(props: Props) {
             onClose={handleCloseUserMenu}
           >
             <Box sx={{ px: 2, py: 1 }}>
-              <Typography variant="subtitle2">{user?.first_name} {user?.last_name}</Typography>
+              <Typography variant="subtitle2">
+                {user?.first_name} {user?.last_name}
+              </Typography>
               <Typography variant="body2" color="text.secondary">
                 {user?.email}
               </Typography>
@@ -172,11 +180,13 @@ export default function ResponsiveDrawer(props: Props) {
               </ListItemIcon>
               <ListItemText>Profile</ListItemText>
             </MenuItem>
-            <MenuItem onClick={handleLogout}>
+            <MenuItem onClick={handleLogout} disabled={isLoggingOut}>
               <ListItemIcon>
                 <LogOut size={20} />
               </ListItemIcon>
-              <ListItemText>Logout</ListItemText>
+              <ListItemText>
+                {isLoggingOut ? "Logging out..." : "Logout"}
+              </ListItemText>
             </MenuItem>
           </Menu>
         </Toolbar>

@@ -6,4 +6,5 @@ export interface Route {
     exact: boolean;
     icon: any;
     page: any;
+    inMenu?: boolean;
 }

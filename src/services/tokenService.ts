@@ -36,6 +36,7 @@ export const clearTokens = () => {
   localStorage.removeItem(REFRESH_TOKEN_KEY);
   localStorage.removeItem(ID_TOKEN_KEY);
   localStorage.removeItem(AUTH_TOKEN_KEY);
+  localStorage.removeItem(USER);
 };
 
 export const refreshTokenFn = async (): Promise<any> => {
