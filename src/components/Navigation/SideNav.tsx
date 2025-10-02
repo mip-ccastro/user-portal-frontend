@@ -3,6 +3,7 @@ import { MenuIcon, UserIcon, LogOut } from "lucide-react";
 import { navigateTo } from "../../services/navigateService";
 import { protected_routes } from "../../routes/routes";
 import { useAuthContext } from "../../hooks/useAuth";
+import { useLocation } from "react-router-dom";
 import { useLogout } from "../../hooks/useAuthHook";
 import { useSnackbar } from "../../context/SnackBarContext";
 import AppBar from "@mui/material/AppBar";
@@ -35,6 +36,7 @@ export default function ResponsiveDrawer(props: Props) {
   const { mutateAsync, isPending: isLoggingOut } = useLogout();
   const { showSnackbar } = useSnackbar();
   const { user, logout } = useAuthContext();
+  const location = useLocation();
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -91,16 +93,41 @@ export default function ResponsiveDrawer(props: Props) {
       </Toolbar>
       <Divider />
       <List>
-        {protected_routes.filter((route) => route.inMenu).map((route, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton onClick={handleNavigate(route.path)}>
-              <ListItemIcon>
-                <route.icon />
-              </ListItemIcon>
-              <ListItemText primary={route.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {protected_routes
+          .filter((route) => route.inMenu)
+          .map((route, index) => {
+            const isActive = location.pathname === route.path;
+            return (
+              <ListItem key={index} disablePadding>
+                <ListItemButton
+                  onClick={handleNavigate(route.path)}
+                  selected={isActive}
+                  sx={{
+                    borderColor: "primary.main",
+                    "&.Mui-selected": {
+                      backgroundColor: "rgba(25, 118, 210, 0.08)",
+                      "&:hover": {
+                        backgroundColor: "rgba(25, 118, 210, 0.12)",
+                      },
+                    },
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{ color: isActive ? "primary.main" : "inherit" }}
+                  >
+                    <route.icon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={route.name}
+                    primaryTypographyProps={{
+                      fontWeight: isActive ? 600 : 400,
+                      color: isActive ? "primary.main" : "inherit",
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
       </List>
     </div>
   );
@@ -130,7 +157,11 @@ export default function ResponsiveDrawer(props: Props) {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <Box sx={{ display: { xs: "none", md: "block" } }}>
-              <Typography variant="body2" sx={{ fontWeight: 500 }} align="right">
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: 500 }}
+                align="right"
+              >
                 {user?.first_name ?? ""} {user?.last_name ?? ""}
               </Typography>
               <Typography variant="caption" sx={{ opacity: 0.8 }} align="right">
