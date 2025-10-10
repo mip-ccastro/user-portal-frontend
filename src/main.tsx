@@ -1,3 +1,4 @@
+import './index.css';
 import { AuthProvider } from "./context/AuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SnackbarProvider } from "./context/SnackBarContext";

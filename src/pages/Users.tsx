@@ -1,5 +1,6 @@
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import { Trash, SquarePen, UsersIcon } from "lucide-react";
+import { useAuthContext } from "../hooks/useAuth";
 import { useFetchUsers } from "../hooks/useUser";
 import { useState } from "react";
 import capitalize from "lodash/capitalize";
@@ -7,11 +8,13 @@ import CreateUserForm from "../components/forms/User/CreateUserForm";
 import DataTable from "../components/common/DataGrid";
 import dayjs from "dayjs";
 import DeleteUserForm from "../components/forms/User/DeleteUserForm";
+import LocalizedFormat from "dayjs/plugin/localizedFormat"
 import ReusableModal from "../components/common/ReusableDialog";
 import type { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import type { User } from "../utils/types/users";
 import UpdateUserForm from "../components/forms/User/UpdateUserForm";
-import { useAuthContext } from "../hooks/useAuth";
+
+dayjs.extend(LocalizedFormat)
 
 const Users = () => {
   const { data: rows = [] } = useFetchUsers();
@@ -137,7 +140,7 @@ const Users = () => {
       headerName: "Created At",
       width: 180,
       renderCell: (params: GridRenderCellParams) => (
-        <span>{dayjs(params.value).format("YYYY-MM-DD hh:mm A")}</span>
+        <span>{dayjs(params.value).format("lll")}</span>
       ),
     },
     {
@@ -145,7 +148,7 @@ const Users = () => {
       headerName: "Updated At",
       width: 180,
       renderCell: (params: GridRenderCellParams) => (
-        <span>{dayjs(params.value).format("YYYY-MM-DD hh:mm A")}</span>
+        <span>{dayjs(params.value).format("lll")}</span>
       ),
     },
     {

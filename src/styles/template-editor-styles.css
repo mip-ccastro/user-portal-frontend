@@ -1,0 +1,36 @@
+.editor-text-bold {
+    font-weight: bold;
+}
+
+.editor-text-italic {
+    font-style: italic;
+}
+
+.editor-text-underline {
+    text-decoration: underline;
+}
+
+.editor-text-strikethrough {
+    text-decoration: line-through;
+}
+
+.editor-text-code {
+    font-family: monospace;
+    background-color: #f0f0f0;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.editor-list-ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.editor-list-ol {
+    list-style-type: decimal;
+    padding-left: 20px;
+}
+
+.editor-listitem {
+    margin: 4px 0;
+}
