@@ -2,15 +2,18 @@ import { $createTextNode, $insertNodes } from "lexical";
 import { Box, Chip, Stack, Typography } from "@mui/material";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
-const TEMPLATE_VARIABLES = [
-  { label: "First Name", value: "{{first_name}}" },
-  { label: "Last Name", value: "{{last_name}}" },
-  { label: "Email", value: "{{email}}" },
-  { label: "Company", value: "{{company}}" },
-  { label: "Date", value: "{{date}}" },
-];
+export interface TemplateVariable {
+  label: string;
+  value: string;
+}
 
-const TemplateVariables = () => {
+export interface TemplateVariablesProps {
+  variables?: Array<TemplateVariable>;
+}
+
+const TemplateVariables = (props: TemplateVariablesProps) => {
+  const { variables = [] } = props;
+
   const [editor] = useLexicalComposerContext();
 
   const insertVariable = (variable: string) => {
@@ -25,17 +28,25 @@ const TemplateVariables = () => {
       <Typography variant="subtitle2" gutterBottom>
         Insert Variable:
       </Typography>
-      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-        {TEMPLATE_VARIABLES.map((variable) => (
-          <Chip
-            key={variable.value}
-            label={variable.label}
-            onClick={() => insertVariable(variable.value)}
-            clickable
-            size="small"
-          />
-        ))}
-      </Stack>
+      {variables?.length === 0 ? (
+        <Typography variant="body2">
+          No variables available. Please select a form for this template or select a different form.
+        </Typography>
+      ) : (
+        <>
+          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+            {variables?.map((variable) => (
+              <Chip
+                key={variable.value}
+                label={variable.label}
+                onClick={() => insertVariable(variable.value)}
+                clickable
+                size="small"
+              />
+            ))}
+          </Stack>
+        </>
+      )}
     </Box>
   );
 };

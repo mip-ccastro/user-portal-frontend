@@ -31,7 +31,7 @@ const PhoneNumberField = <T extends FieldValues>({
 }: PhoneNumberFieldProps<T>) => {
   return (
     <Grid container>
-      <Grid size={12}>
+      <Grid size={12} my={1}>
         <Controller
           name={name}
           control={control}

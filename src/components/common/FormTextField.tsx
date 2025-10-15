@@ -16,6 +16,9 @@ type Props = {
   helperText?: string;
   defaultValue?: string;
   required?: boolean;
+  placeHolder?: string;
+  multiline?: boolean;
+  rows?: number;
 };
 
 const FormTextField = ({
@@ -30,6 +33,9 @@ const FormTextField = ({
   error,
   helperText,
   defaultValue,
+  placeHolder,
+  multiline,
+  rows
 }: Props) => (
   <Controller
     name={name}
@@ -52,6 +58,9 @@ const FormTextField = ({
           type={type}
           error={showError}
           helperText={showHelperText}
+          placeholder={placeHolder}
+          multiline={multiline}
+          rows={rows}
           sx={{
             "& .MuiFormLabel-asterisk": {
               color: "error.main",

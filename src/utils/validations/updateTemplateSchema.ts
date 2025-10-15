@@ -5,6 +5,7 @@ export const updateTemplateSchema = z.object({
     template_name: z.string().min(1, "Template name is required"),
     content: z.string().optional(),
     recipients: z.array(z.string()).optional(),
+    form_id: z.string().optional(),
 })
 
 export type UpdateTemplateInput = z.infer<typeof updateTemplateSchema>;

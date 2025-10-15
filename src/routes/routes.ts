@@ -1,4 +1,4 @@
-import { HomeIcon, UsersIcon, User, LayoutTemplate, Contact2 } from "lucide-react"
+import { HomeIcon, UsersIcon, User, LayoutTemplate, Contact2, Files } from "lucide-react"
 import { lazy } from "react";
 import type { Route } from "../utils/types/routes"
 
@@ -9,6 +9,8 @@ const Login = lazy(() => import("../pages/Login"));
 const Templates = lazy(() => import("../pages/Templates"));
 const Template = lazy(() => import("../pages/Template"));
 const Recipients = lazy(() => import("../pages/Recipients"));
+const Forms = lazy(() => import("../pages/Forms"));
+const Form = lazy(() => import("../pages/Form"));
 
 export const protected_routes: Array<Route> = [
     {
@@ -58,6 +60,22 @@ export const protected_routes: Array<Route> = [
         icon: Contact2,
         page: Recipients,
         inMenu: true
+    },
+    {
+        path: "/forms",
+        name: "Forms",
+        exact: true,
+        icon: Files,
+        page: Forms,
+        inMenu: true
+    },
+    {
+        path: "/form/:id",
+        name: "Form",
+        exact: true,
+        icon: Files,
+        page: Form,
+        inMenu: false
     },
 ]
 

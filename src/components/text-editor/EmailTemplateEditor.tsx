@@ -20,10 +20,11 @@ export type TemplateProps = {
   setContent: any;
   initialContent?: string;
   isUpdating?: boolean;
+  variables?: Array<{ label: string; value: string }>;
 };
 
 const EmailTemplateEditor = (props: TemplateProps) => {
-  const { content, setContent } = props;
+  const { content, setContent, variables = [] } = props;
   const [editor] = useLexicalComposerContext();
   const isFirstRender = useRef(true);
 
@@ -61,7 +62,7 @@ const EmailTemplateEditor = (props: TemplateProps) => {
 
   return (
     <Box>
-      <TemplateVariables />
+      <TemplateVariables variables={variables}/>
       <Toolbar />
       <Paper sx={{ p: 2, mb: 2 }}>
         <Box
