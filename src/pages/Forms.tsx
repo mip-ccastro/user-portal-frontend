@@ -1,23 +1,29 @@
 import { Box, Button, IconButton, Typography } from '@mui/material'
-import { Files, SquarePen, Trash } from 'lucide-react'
+import { Files, Send, SquarePen, Trash } from 'lucide-react'
 import { navigateTo } from '../services/navigateService';
+import { useFetchForms } from '../hooks/useFormHook';
 import { useState } from 'react';
+import CreateForm from '../components/forms/Forms/CreateForm';
 import DataTable from '../components/common/DataGrid'
 import dayjs from 'dayjs';
 import LocalizedFormat from "dayjs/plugin/localizedFormat"
-import type { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import ReusableModal from '../components/common/ReusableDialog';
-import CreateForm from '../components/forms/Forms/CreateForm';
-import { useFetchForms } from '../hooks/useFormHook';
+import type { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { useAuthContext } from '../hooks/useAuth';
 
 dayjs.extend(LocalizedFormat)
 
 const Forms = () => {
   const { data: rows } = useFetchForms();
   const [open, setOpen] = useState(false)
+  const { user } = useAuthContext()
   
   const ActionsCell = (params: GridRenderCellParams) => {
     const rowData = params.row;
+    
+    const handleSubmitForm = () => {
+      navigateTo(`/form/submit/${rowData.id}`);
+    };
 
     const handleEdit = () => {
       navigateTo(`/form/${rowData.id}`);
@@ -29,12 +35,21 @@ const Forms = () => {
 
     return (
       <>
-        <IconButton onClick={handleEdit} color="primary" size="small">
-          <SquarePen fontSize="inherit" />
+        <IconButton onClick={handleSubmitForm} color="primary" size="small">
+          <Send fontSize="inherit" />
         </IconButton>
-        <IconButton onClick={handleDelete} color="error" size="small" disabled={rowData.templates.length > 0}>
-          <Trash fontSize="inherit" />
-        </IconButton>
+        {
+          user?.user_role === "admin" && (
+            <>
+              <IconButton onClick={handleEdit} color="primary" size="small">
+                <SquarePen fontSize="inherit" />
+              </IconButton>
+              <IconButton onClick={handleDelete} color="error" size="small" disabled={rowData.templates.length > 0}>
+                <Trash fontSize="inherit" />
+              </IconButton>
+            </>
+          )
+        }
       </>
     );
   };
@@ -82,14 +97,18 @@ const Forms = () => {
           Forms
         </Typography>
       </Box>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setOpen(true)}
-        sx={{ mb: 2 }}
-      >
-        Create Form
-      </Button>
+      {
+        user?.user_role === "admin" && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setOpen(true)}
+            sx={{ mb: 2 }}
+          >
+            Create Form
+          </Button>
+        )
+      }
       <DataTable columns={columns} rows={rows} />
       <ReusableModal
         title='Create Form'

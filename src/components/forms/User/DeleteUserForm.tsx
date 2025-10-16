@@ -3,6 +3,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import { useDeleteUser, useFetchUser } from "../../../hooks/useUser";
 import { useSnackbar } from "../../../context/SnackBarContext";
 import Loading from "../../common/Loading";
+import Error from "../../common/Error";
 
 export type UpdateUserFormProps = {
   cancel: () => void;
@@ -35,7 +36,7 @@ const DeleteUserForm = (props: UpdateUserFormProps) => {
   };
 
   if(isLoading) return <Loading message="Loading..." />
-  if(isError) return <p>Error</p>
+  if(isError) return <Error />
 
   return (
     <Grid padding={1} size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>

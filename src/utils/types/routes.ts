@@ -7,4 +7,5 @@ export interface Route {
     icon: any;
     page: any;
     inMenu?: boolean;
+    allowedRoles?: string[];
 }

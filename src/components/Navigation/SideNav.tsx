@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 import { DRAWER_WIDTH } from "../../utils/constants/sidenav";
 import { MenuIcon, UserIcon, LogOut } from "lucide-react";
 import { navigateTo } from "../../services/navigateService";
@@ -81,6 +83,22 @@ export default function ResponsiveDrawer(props: Props) {
     }
   };
 
+
+  const filteredRoutes = () => {
+    return protected_routes.map((route) => {
+      const { allowedRoles = [] } = route;
+      if(user && !!allowedRoles.length && allowedRoles.includes(user?.user_role as string)) {
+        return route
+      }
+
+      if(allowedRoles.length <= 0 ) {
+        return route
+      }
+
+      return null
+    }).filter(Boolean);
+  }
+
   const drawer = (
     <div>
       <Toolbar>
@@ -93,14 +111,14 @@ export default function ResponsiveDrawer(props: Props) {
       </Toolbar>
       <Divider />
       <List>
-        {protected_routes
-          .filter((route) => route.inMenu)
+        {filteredRoutes()
+          .filter((route) => route?.inMenu)
           .map((route, index) => {
-            const isActive = location.pathname === route.path;
+            const isActive = location.pathname === route?.path;
             return (
               <ListItem key={index} disablePadding>
                 <ListItemButton
-                  onClick={handleNavigate(route.path)}
+                  onClick={handleNavigate(route?.path as string)}
                   selected={isActive}
                   sx={{
                     borderColor: "primary.main",
@@ -115,10 +133,13 @@ export default function ResponsiveDrawer(props: Props) {
                   <ListItemIcon
                     sx={{ color: isActive ? "primary.main" : "inherit" }}
                   >
-                    <route.icon />
+                    {
+                      // @ts-ignore
+                      <route.icon />
+                    }
                   </ListItemIcon>
                   <ListItemText
-                    primary={route.name}
+                    primary={route?.name}
                     primaryTypographyProps={{
                       fontWeight: isActive ? 600 : 400,
                       color: isActive ? "primary.main" : "inherit",

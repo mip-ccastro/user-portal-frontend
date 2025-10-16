@@ -42,7 +42,7 @@ export const clearTokens = () => {
 export const refreshTokenFn = async (): Promise<any> => {
   const refreshToken = getRefreshToken();
   if (!refreshToken) return;
-  const baseURL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+  const baseURL = "/api";
   if (!baseURL) throw new Error("API base URL is not defined");
   const res = await fetch(`${baseURL}/refresh-access-token`, {
     method: "GET",

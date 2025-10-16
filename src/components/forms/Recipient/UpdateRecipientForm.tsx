@@ -8,6 +8,7 @@ import { useSnackbar } from "../../../context/SnackBarContext";
 import PhoneNumberField from "../../common/PhoneNumberField";
 import { updateRecipient, type UpdateRecipientInput } from "../../../utils/validations/updateRecipient";
 import Loading from "../../common/Loading";
+import Error from "../../common/Error";
 
 export type CreateTemplateFormProps = {
   cancel: () => void;
@@ -66,7 +67,7 @@ const UpdateRecipientForm = (props: CreateTemplateFormProps) => {
   };
 
   if(isLoading) return <Loading message="Loading..." />
-  if(isError) return <p>Error</p>
+  if(isError) return <Error />
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

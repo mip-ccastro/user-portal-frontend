@@ -1,4 +1,4 @@
-import { HomeIcon, UsersIcon, User, LayoutTemplate, Contact2, Files } from "lucide-react"
+import { HomeIcon, UsersIcon, User, LayoutTemplate, Contact2, Files, Library } from "lucide-react"
 import { lazy } from "react";
 import type { Route } from "../utils/types/routes"
 
@@ -11,6 +11,8 @@ const Template = lazy(() => import("../pages/Template"));
 const Recipients = lazy(() => import("../pages/Recipients"));
 const Forms = lazy(() => import("../pages/Forms"));
 const Form = lazy(() => import("../pages/Form"));
+const SubmitForm = lazy(() => import("../pages/SubmitForm"));
+const Submissions = lazy(() => import("../pages/Submissions"));
 
 export const protected_routes: Array<Route> = [
     {
@@ -27,7 +29,8 @@ export const protected_routes: Array<Route> = [
         exact: true,
         icon: UsersIcon,
         page: Users,
-        inMenu: true
+        inMenu: true,
+        allowedRoles: ["admin"]
     },
     {
         path: "/profile",
@@ -35,7 +38,8 @@ export const protected_routes: Array<Route> = [
         exact: true,
         icon: User,
         page: Profile,
-        inMenu: false
+        inMenu: false,
+        allowedRoles: ["admin", "user"]
     },
     {
         path: "/templates",
@@ -43,7 +47,8 @@ export const protected_routes: Array<Route> = [
         exact: true,
         icon: LayoutTemplate,
         page: Templates,
-        inMenu: true
+        inMenu: true,
+        allowedRoles: ["admin"]
     },
     {
         path: "/template/:id",
@@ -51,7 +56,8 @@ export const protected_routes: Array<Route> = [
         exact: true,
         icon: LayoutTemplate,
         page: Template,
-        inMenu: false
+        inMenu: false,
+        allowedRoles: ["admin"]
     },
     {
         path: "/recipients",
@@ -59,7 +65,8 @@ export const protected_routes: Array<Route> = [
         exact: true,
         icon: Contact2,
         page: Recipients,
-        inMenu: true
+        inMenu: true,
+        allowedRoles: ["admin"]
     },
     {
         path: "/forms",
@@ -67,7 +74,8 @@ export const protected_routes: Array<Route> = [
         exact: true,
         icon: Files,
         page: Forms,
-        inMenu: true
+        inMenu: true,
+        allowedRoles: ["admin", "user"]
     },
     {
         path: "/form/:id",
@@ -75,7 +83,26 @@ export const protected_routes: Array<Route> = [
         exact: true,
         icon: Files,
         page: Form,
-        inMenu: false
+        inMenu: false,
+        allowedRoles: ["admin"]
+    },
+    {
+        path: "/form/submit/:id",
+        name: "Form",
+        exact: true,
+        icon: Files,
+        page: SubmitForm,
+        inMenu: false,
+        allowedRoles: ["admin", "user"]
+    },
+    {
+        path: "/submissions",
+        name: "Submissions",
+        exact: true,
+        icon: Library,
+        page: Submissions,
+        inMenu: true,
+        allowedRoles: ["admin"]
     },
 ]
 

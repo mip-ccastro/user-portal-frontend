@@ -7,6 +7,7 @@ import { useSnackbar } from "../../../context/SnackBarContext"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Loading from "../../common/Loading"
 import UpdateUserInformation from "./components/UpdateUserInformation"
+import Error from "../../common/Error"
 
 export type UpdateUserFormProps = {
   cancel: () => void;
@@ -67,7 +68,7 @@ const UpdateUserForm = (props: UpdateUserFormProps) => {
   }
 
   if(isLoading) return <Loading message="Loading..." />
-  if(isError) return <p>Error</p>
+  if(isError) return <Error />
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

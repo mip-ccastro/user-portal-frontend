@@ -25,13 +25,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { isArray } from "lodash";
+import { useFetchForms } from "../hooks/useFormHook";
+import { useFetchRecipients } from "../hooks/useRecipient";
+import Error from "../components/common/Error";
 import FormTextField from "../components/common/FormTextField";
 import Loading from "../components/common/Loading";
-import TemplateEditor from "../components/text-editor/TemplateEditor";
 import MultipleSelect from "../components/common/MultipleSelectDefault";
-import { useFetchRecipients } from "../hooks/useRecipient";
-import { useFetchForms } from "../hooks/useFormHook";
-import { isArray } from "lodash";
+import TemplateEditor from "../components/text-editor/TemplateEditor";
 
 const Template = () => {
   const { id } = useParams();
@@ -102,7 +103,7 @@ const Template = () => {
         message="Fetching template..."
       />
     );
-  if (isError) return <p>Error</p>;
+  if (isError) return <Error />;
 
   return (
     <div>

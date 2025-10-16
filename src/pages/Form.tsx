@@ -14,6 +14,7 @@ import { useFetchForm, useUpdateForm } from "../hooks/useFormHook";
 import { useParams } from "react-router-dom";
 import { useSnackbar } from "../context/SnackBarContext";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Error from "../components/common/Error";
 import FormBuilder from "../components/common/FormBuilder";
 import FormTextField from "../components/common/FormTextField";
 import isArray from "lodash/isArray";
@@ -67,7 +68,7 @@ const Form = () => {
     return (
       <Loading fullScreen={false} backdrop={false} message="Fetching form..." />
     );
-  if (isError) return <p>Error</p>;
+  if (isError) return <Error />;
 
   return (
     <form>
